@@ -1,0 +1,12 @@
+
+call themis#option('recursive', 1)
+
+let s:root = getcwd()
+
+function! TddTestBeforeEach() abort
+    execute 'cd' s:root
+endfunction
+
+function! TddTestAfterEach() abort
+    silent! %bwipeout!
+endfunction
