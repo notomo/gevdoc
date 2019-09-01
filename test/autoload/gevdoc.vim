@@ -39,5 +39,12 @@ function! s:suite.generate()
     call s:assert.equals(writer.file_path, expected_path)
 
     call s:assert.match(writer.lines[0], '^\*autoload.txt\*')
+
+    call s:assert.match(writer.lines[3], '^COMMANDS')
+    call s:assert.match(writer.lines[3], '\*autoload-commands\*$')
+
+    call s:assert.match(writer.lines[5], '^:GevdocTest')
+    call s:assert.match(writer.lines[5], '\*:GevdocTest\*$')
+
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

@@ -1,8 +1,11 @@
 
 function! gevdoc#model#doc#new(plugin_path) abort
-    let name = fnamemodify(a:plugin_path, ':p:h:t')
-    let file_path = fnamemodify(a:plugin_path, ':p') . 'doc/' . name . '.txt'
+    let plugin_path = fnamemodify(a:plugin_path, ':p')
+    let name = fnamemodify(plugin_path, ':h:t')
+    let file_path = plugin_path . 'doc/' . name . '.txt'
     let doc = {
+        \ 'name': name,
+        \ 'plugin_path': plugin_path,
         \ 'file_path': file_path,
         \ 'textwidth': 78,
     \ }
@@ -12,8 +15,7 @@ function! gevdoc#model#doc#new(plugin_path) abort
         return
             \ self.header() +
             \ sep +
-            \ self.body() +
-            \ sep +
+            \ self.body(sep) +
             \ self.footer()
     endfunction
 
@@ -22,8 +24,12 @@ function! gevdoc#model#doc#new(plugin_path) abort
         return [first_line]
     endfunction
 
-    function! doc.body() abort
-        return ['NOT IMPLEMENTED']
+    function! doc.body(sep) abort
+        let lines = []
+        for chapter in gevdoc#model#chapter#all(self.plugin_path, self.name, self.textwidth)
+            let lines += chapter.lines() + a:sep
+        endfor
+        return lines
     endfunction
 
     function! doc.footer() abort
