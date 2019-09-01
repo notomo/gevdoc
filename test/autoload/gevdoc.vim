@@ -10,10 +10,17 @@ function! s:suite.after_each()
     call TddTestAfterEach()
 endfunction
 
-function! s:noop_writer() abort
-    let writer = {}
+function! s:writer() abort
+    let writer = {'lines': v:null, 'file_path': v:null}
 
-    function! writer.write(doc) abort
+    function! writer.write(file_path, lines) abort
+        call themis#log('[path] ' . a:file_path)
+        for line in a:lines
+            call themis#log('[file] ' . line)
+        endfor
+
+        let self.lines = a:lines
+        let self.file_path = a:file_path
     endfunction
 
     return writer
@@ -22,9 +29,15 @@ endfunction
 function! s:suite.generate()
     cd ./test/autoload
 
-    let path = './doc'
-    let writer = s:noop_writer()
-    let doc = gevdoc#generate(path, writer)
+    let path = '.'
+    let writer = s:writer()
 
-    call s:assert.equals(doc.path, path)
+    let doc = gevdoc#generate('.', writer)
+
+    let expected_path = fnamemodify(path, ':p') . 'doc/autoload.txt'
+    call s:assert.equals(doc.file_path, expected_path)
+    call s:assert.equals(writer.file_path, expected_path)
+
+    call s:assert.match(writer.lines[0], '^\*autoload.txt\*')
+    call s:assert.match(writer.lines[-1], '^vim:')
 endfunction
