@@ -3,10 +3,10 @@ call themis#option('recursive', 1)
 
 let s:root = getcwd()
 
-function! TddTestBeforeEach() abort
+function! GevdocTestBeforeEach() abort
     execute 'cd' s:root
 endfunction
 
-function! TddTestAfterEach() abort
+function! GevdocTestAfterEach() abort
     silent! %bwipeout!
 endfunction

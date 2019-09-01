@@ -3,11 +3,11 @@ let s:suite = themis#suite('autoload.gevdoc')
 let s:assert = themis#helper('assert')
 
 function! s:suite.before_each()
-    call TddTestBeforeEach()
+    call GevdocTestBeforeEach()
 endfunction
 
 function! s:suite.after_each()
-    call TddTestAfterEach()
+    call GevdocTestAfterEach()
 endfunction
 
 function! s:writer() abort
