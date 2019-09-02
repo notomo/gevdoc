@@ -32,7 +32,7 @@ function! s:suite.generate()
     let path = '.'
     let writer = s:writer()
 
-    let doc = gevdoc#generate('.', writer)
+    let doc = gevdoc#generate('.', writer, {'exclude': ['_test_data/excluded']})
 
     let expected_path = fnamemodify(path, ':p') . 'doc/autoload.txt'
     call s:assert.equals(doc.file_path, expected_path)
@@ -45,6 +45,9 @@ function! s:suite.generate()
 
     call s:assert.match(writer.lines[5], '^:GevdocTest')
     call s:assert.match(writer.lines[5], '\*:GevdocTest\*$')
+
+    let lines = join(writer.lines, "\n")
+    call s:assert.not_match(lines, '.*GevdocTestExcluded.*')
 
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

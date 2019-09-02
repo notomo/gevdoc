@@ -1,9 +1,16 @@
 
 let s:TYPE_COMMAND = 'command'
 
-function! gevdoc#model#chapter#all(plugin_path, prefix, textwidth) abort
+function! gevdoc#model#chapter#all(plugin_path, prefix, textwidth, excluded_pattern) abort
     let sections = []
-    for path in glob(a:plugin_path . '/**/*.vim', v:true, v:true)
+
+    let paths = glob(a:plugin_path . '**/*.vim', v:true, v:true)
+    call map(paths, {_, path -> fnamemodify(path, ':.')})
+    if !empty(a:excluded_pattern)
+        call filter(paths, {_, path -> path !~# a:excluded_pattern })
+    endif
+
+    for path in paths
         let file = readfile(path)
         let sections += gevdoc#model#section#all(file, a:textwidth)
     endfor
