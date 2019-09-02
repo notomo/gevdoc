@@ -3,6 +3,6 @@ test:
 	THEMIS_VIM=vim THEMIS_ARGS="-e -s" themis
 
 start:
-	./bin/gevdoc
+	./bin/gevdoc --exclude test/autoload/_test_data
 
 .PHONY: test
