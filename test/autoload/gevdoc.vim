@@ -38,24 +38,33 @@ function! s:suite.generate()
     call s:assert.equals(doc.file_path, expected_path)
     call s:assert.equals(writer.file_path, expected_path)
 
+    " dump to buffer
+    call append(1, writer.lines)
+    1delete _
+
     call s:assert.match(writer.lines[0], '^\*autoload.txt\*')
 
-    call s:assert.match(writer.lines[3], '^COMMANDS')
-    call s:assert.match(writer.lines[3], '\*autoload-commands\*$')
+    let commands_index = search('^COMMANDS', 'n') - 1
+    call s:assert.match(writer.lines[commands_index], '^COMMANDS')
+    call s:assert.match(writer.lines[commands_index], '\*autoload-commands\*$')
 
-    call s:assert.match(writer.lines[5], '^:GevdocTestCommand')
-    call s:assert.match(writer.lines[5], '\*:GevdocTestCommand\*$')
-    call s:assert.match(writer.lines[6], '^  test command$')
+    call s:assert.match(writer.lines[commands_index + 1], '', 'empty line')
 
-    let lines = join(writer.lines, "\n")
-    call s:assert.not_match(lines, '.*GevdocTestExcluded.*')
+    call s:assert.match(writer.lines[commands_index + 2], '^:GevdocTestCommand')
+    call s:assert.match(writer.lines[commands_index + 2], '\*:GevdocTestCommand\*$')
+    call s:assert.match(writer.lines[commands_index + 3], '^  test command$')
 
-    call s:assert.match(writer.lines[9], '^HIGHLIGHT GROUPS')
-    call s:assert.match(writer.lines[9], '\*autoload-highlight-groups\*$')
+    call s:assert.equals(search('GevdocTestExcluded', 'n'), 0)
 
-    call s:assert.match(writer.lines[11], '^GevDocTestHighlight')
-    call s:assert.match(writer.lines[11], '\*GevDocTestHighlight\*$')
-    call s:assert.match(writer.lines[12], '  test highlight group')
+    let hl_index = search('^HIGHLIGHT GROUPS', 'n') - 1
+    call s:assert.match(writer.lines[hl_index], '^HIGHLIGHT GROUPS')
+    call s:assert.match(writer.lines[hl_index], '\*autoload-highlight-groups\*$')
+
+    call s:assert.match(writer.lines[hl_index + 1], '', 'empty line')
+
+    call s:assert.match(writer.lines[hl_index + 2], '^GevDocTestHighlight')
+    call s:assert.match(writer.lines[hl_index + 2], '\*GevDocTestHighlight\*$')
+    call s:assert.match(writer.lines[hl_index + 3], '  test highlight group')
 
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction
