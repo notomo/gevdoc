@@ -42,7 +42,8 @@ function! gevdoc#model#section#new(definition, comments, textwidth) abort
         let tag = printf('*%s*', name)
         let spaces = repeat(' ', self.textwidth - len(tag) - len(name))
         let title = printf('%s%s%s', name, spaces, tag)
-        return [title] + self.comments
+        let comments = map(copy(self.comments), {_, v -> '  ' . v})
+        return [title] + comments
     endfunction
 
     return section

@@ -45,7 +45,7 @@ function! s:suite.generate()
 
     call s:assert.match(writer.lines[5], '^:GevdocTestCommand')
     call s:assert.match(writer.lines[5], '\*:GevdocTestCommand\*$')
-    call s:assert.match(writer.lines[6], '^test command$')
+    call s:assert.match(writer.lines[6], '^  test command$')
 
     let lines = join(writer.lines, "\n")
     call s:assert.not_match(lines, '.*GevdocTestExcluded.*')
@@ -55,7 +55,7 @@ function! s:suite.generate()
 
     call s:assert.match(writer.lines[11], '^GevDocTestHighlight')
     call s:assert.match(writer.lines[11], '\*GevDocTestHighlight\*$')
-    call s:assert.match(writer.lines[12], 'test highlight group')
+    call s:assert.match(writer.lines[12], '  test highlight group')
 
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction
