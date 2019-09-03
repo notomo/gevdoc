@@ -43,11 +43,19 @@ function! s:suite.generate()
     call s:assert.match(writer.lines[3], '^COMMANDS')
     call s:assert.match(writer.lines[3], '\*autoload-commands\*$')
 
-    call s:assert.match(writer.lines[5], '^:GevdocTest')
-    call s:assert.match(writer.lines[5], '\*:GevdocTest\*$')
+    call s:assert.match(writer.lines[5], '^:GevdocTestCommand')
+    call s:assert.match(writer.lines[5], '\*:GevdocTestCommand\*$')
+    call s:assert.match(writer.lines[6], '^test command$')
 
     let lines = join(writer.lines, "\n")
     call s:assert.not_match(lines, '.*GevdocTestExcluded.*')
+
+    call s:assert.match(writer.lines[9], '^HIGHLIGHT GROUPS')
+    call s:assert.match(writer.lines[9], '\*autoload-highlight-groups\*$')
+
+    call s:assert.match(writer.lines[11], '^GevDocTestHighlight')
+    call s:assert.match(writer.lines[11], '\*GevDocTestHighlight\*$')
+    call s:assert.match(writer.lines[12], 'test highlight group')
 
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

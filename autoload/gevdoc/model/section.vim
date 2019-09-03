@@ -18,8 +18,8 @@ function! gevdoc#model#section#all(file_lines, textwidth) abort
 
         let in_section = v:false
         if !empty(comments)
-            let name = s:parse_command(line)
-            let section = gevdoc#model#section#new(name, comments, a:textwidth)
+            let definition = s:parse(line)
+            let section = gevdoc#model#section#new(definition, comments, a:textwidth)
             call add(sections, section)
 
             let comments = []
@@ -29,31 +29,32 @@ function! gevdoc#model#section#all(file_lines, textwidth) abort
     return sections
 endfunction
 
-function! gevdoc#model#section#new(name, comments, textwidth) abort
+function! gevdoc#model#section#new(definition, comments, textwidth) abort
     let section = {
-        \ 'name': a:name,
-        \ 'type': 'command',
+        \ 'definition': a:definition,
+        \ 'type': a:definition.type,
         \ 'comments': a:comments,
         \ 'textwidth': a:textwidth,
     \ }
 
     function! section.lines() abort
-        let command = ':' . self.name
-        let tag = '*' . command . '*'
-        let spaces = repeat(' ', self.textwidth - len(tag) - len(command))
-        let title = printf('%s%s%s', command, spaces, tag)
+        let name = self.definition.name
+        let tag = printf('*%s*', name)
+        let spaces = repeat(' ', self.textwidth - len(tag) - len(name))
+        let title = printf('%s%s%s', name, spaces, tag)
         return [title] + self.comments
     endfunction
 
     return section
 endfunction
 
-function! s:parse_command(line) abort
-    for factor in split(a:line, '\v\s+')[1:]
-        if factor[0] !=? '-'
-            return factor
-        endif
-    endfor
+function! s:parse(line) abort
+    let factors = split(a:line, '\v\s+')
+    if factors[0] =~? '^com'
+        return gevdoc#model#definition#command#parse(factors)
+    elseif factors[0] =~? '^hi'
+        return gevdoc#model#definition#highlight_group#parse(factors)
+    endif
 
-    throw 'failed to parse command: ' . a:line
+    throw 'not supported factor: ' . factors[0]
 endfunction

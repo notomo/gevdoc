@@ -1,5 +1,6 @@
 
 let s:TYPE_COMMAND = 'command'
+let s:TYPE_HIGHLIGHT_GROUP = 'highlight group'
 
 function! gevdoc#model#chapter#all(plugin_path, prefix, textwidth, excluded_pattern) abort
     let sections = []
@@ -28,6 +29,10 @@ function! gevdoc#model#chapter#all(plugin_path, prefix, textwidth, excluded_patt
         let chapter = gevdoc#model#chapter#new('commands', chapterMap[s:TYPE_COMMAND], a:prefix, a:textwidth)
         call add(chapters, chapter)
     endif
+    if has_key(chapterMap, s:TYPE_HIGHLIGHT_GROUP)
+        let chapter = gevdoc#model#chapter#new('highlight groups', chapterMap[s:TYPE_HIGHLIGHT_GROUP], a:prefix, a:textwidth)
+        call add(chapters, chapter)
+    endif
 
     return chapters
 endfunction
@@ -42,14 +47,17 @@ function! gevdoc#model#chapter#new(name, sections, prefix, textwidth) abort
 
     function! chapter.lines() abort
         let lines = [self.title(), '']
-        for section in self.sections
+        for section in self.sections[:-2]
             let lines += section.lines() + ['']
+        endfor
+        for section in self.sections[-1:]
+            let lines += section.lines()
         endfor
         return lines
     endfunction
 
     function! chapter.title() abort
-        let tag = printf('*%s-%s*', self.prefix, tolower(self.name))
+        let tag = printf('*%s-%s*', self.prefix, substitute(tolower(self.name), ' ', '-', 'g'))
         let spaces = repeat(' ', self.textwidth - len(tag) - len(self.name))
         return printf('%s%s%s', self.name, spaces, tag)
     endfunction
