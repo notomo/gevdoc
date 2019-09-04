@@ -20,7 +20,7 @@ function! gevdoc#model#section#all(file_lines, textwidth) abort
 
         let in_section = v:false
         if !empty(comments)
-            let definition = s:parse(line)
+            let definition = gevdoc#model#definition#definition#parse(line)
             let section = gevdoc#model#section#new(definition, comments, a:textwidth)
             call add(sections, section)
 
@@ -47,19 +47,4 @@ function! gevdoc#model#section#new(definition, comments, textwidth) abort
     endfunction
 
     return section
-endfunction
-
-function! s:parse(line) abort
-    let factors = split(a:line, '\v\s+')
-    if factors[0] =~# '^com'
-        return gevdoc#model#definition#command#parse(factors)
-    elseif factors[0] =~# '^hi'
-        return gevdoc#model#definition#highlight_group#parse(factors)
-    elseif factors[0] =~# '^\w*noremap'
-        return gevdoc#model#definition#plug_mapping#parse(factors)
-    elseif len(factors) > 2 && factors[0] ==# 'let' && factors[1] =~# '^[gb]:'
-        return gevdoc#model#definition#variable#parse(factors)
-    endif
-
-    throw 'not supported factor: ' . factors[0]
 endfunction
