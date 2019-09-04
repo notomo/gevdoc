@@ -62,9 +62,8 @@ function! gevdoc#model#chapter#new(name, sections, prefix, textwidth) abort
     endfunction
 
     function! chapter.title() abort
-        let tag = printf('*%s-%s*', self.prefix, substitute(tolower(self.name), ' ', '-', 'g'))
-        let spaces = repeat(' ', self.textwidth - len(tag) - len(self.name))
-        return printf('%s%s%s', self.name, spaces, tag)
+        let tag_name = printf('%s-%s', self.prefix, substitute(tolower(self.name), ' ', '-', 'g'))
+        return gevdoc#model#tag#add(self.name, self.textwidth, tag_name)
     endfunction
 
     return chapter
