@@ -6,7 +6,7 @@ function! gevdoc#model#definition#highlight_group#parse(factors) abort
         endif
     endfor
 
-    throw 'failed to hightlight group: ' . string(a:factors)
+    throw 'failed to parse hightlight group: ' . string(a:factors)
 endfunction
 
 function! gevdoc#model#definition#highlight_group#new(name) abort

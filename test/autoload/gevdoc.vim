@@ -82,5 +82,22 @@ function! s:suite.generate()
     call s:assert.match(writer.lines[mapping_index + 5], '\*<Plug>(gevdoc-indent-test)\*$')
     call s:assert.match(writer.lines[mapping_index + 6], '  indent test mapping')
 
+    let variables_index = search('^VARIABLES', 'n') - 1
+    call s:assert.match(writer.lines[variables_index], '^VARIABLES')
+    call s:assert.match(writer.lines[variables_index], '\*autoload-variables\*$')
+
+    call s:assert.match(writer.lines[variables_index + 1], '', 'empty line')
+
+    call s:assert.match(writer.lines[variables_index + 2], '^g:gevdoc_test')
+    call s:assert.match(writer.lines[variables_index + 2], '\*g:gevdoc_test\*$')
+    call s:assert.match(writer.lines[variables_index + 3], '^  test global variable$')
+    call s:assert.match(writer.lines[variables_index + 4], '^  multi line description$')
+
+    call s:assert.match(writer.lines[mapping_index + 5], '', 'empty line')
+
+    call s:assert.match(writer.lines[variables_index + 6], '^b:gevdoc_test')
+    call s:assert.match(writer.lines[variables_index + 6], '\*b:gevdoc_test\*$')
+    call s:assert.match(writer.lines[variables_index + 7], '^  test buffer variable$')
+
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

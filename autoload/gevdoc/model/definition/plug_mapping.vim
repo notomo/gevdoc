@@ -7,7 +7,7 @@ function! gevdoc#model#definition#plug_mapping#parse(factors) abort
         endif
     endfor
 
-    throw 'failed to plug mapping: ' . string(a:factors)
+    throw 'failed to parse plug mapping: ' . string(a:factors)
 endfunction
 
 function! gevdoc#model#definition#plug_mapping#new(name) abort

@@ -12,3 +12,10 @@ if v:true
     "" indent test mapping
     nnoremap <Plug>(gevdoc-indent-test) :<C-u>GevdocTestCommand<CR>
 endif
+
+"" test global variable
+" multi line description
+let g:gevdoc_test = 1
+
+"" test buffer variable
+let b:gevdoc_test = 1
