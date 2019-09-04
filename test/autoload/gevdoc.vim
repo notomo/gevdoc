@@ -76,5 +76,11 @@ function! s:suite.generate()
     call s:assert.match(writer.lines[mapping_index + 2], '\*<Plug>(gevdoc-test)\*$')
     call s:assert.match(writer.lines[mapping_index + 3], '  test mapping')
 
+    call s:assert.match(writer.lines[mapping_index + 4], '', 'empty line')
+
+    call s:assert.match(writer.lines[mapping_index + 5], '^<Plug>(gevdoc-indent-test)')
+    call s:assert.match(writer.lines[mapping_index + 5], '\*<Plug>(gevdoc-indent-test)\*$')
+    call s:assert.match(writer.lines[mapping_index + 6], '  indent test mapping')
+
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

@@ -5,13 +5,15 @@ function! gevdoc#model#section#all(file_lines, textwidth) abort
     let comments = []
     let in_section = v:false
     for line in a:file_lines
-        if in_section && match(line, '^"') != -1
-            call add(comments, line[2:])
+        let comment = matchstr(line, '^\s*\zs".*')
+        if in_section && !empty(comment)
+            call add(comments, comment[2:])
             continue
         endif
 
-        if match(line, '^""') != -1
-            call add(comments, line[3:])
+        let doc_start_comment = matchstr(line, '^\s*\zs"".*')
+        if !empty(doc_start_comment)
+            call add(comments, doc_start_comment[3:])
             let in_section = v:true
             continue
         endif
