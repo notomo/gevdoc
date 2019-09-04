@@ -17,15 +17,10 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
     function! doc.lines() abort
         let sep = self.separater()
         return
-            \ self.header() +
+            \ gevdoc#model#header#lines(self.file_path) +
             \ sep +
             \ self.body(sep) +
-            \ self.footer()
-    endfunction
-
-    function! doc.header() abort
-        let first_line = printf('*%s*', fnamemodify(self.file_path, ':t'))
-        return [first_line]
+            \ gevdoc#model#footer#lines(self.textwidth)
     endfunction
 
     function! doc.body(sep) abort
@@ -34,11 +29,6 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
             let lines += chapter.lines() + a:sep
         endfor
         return lines
-    endfunction
-
-    function! doc.footer() abort
-        let last_line = printf('vim:tw=%s:ft=help', self.textwidth)
-        return [last_line]
     endfunction
 
     function! doc.separater() abort
