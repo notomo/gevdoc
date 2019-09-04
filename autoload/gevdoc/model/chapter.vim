@@ -1,6 +1,7 @@
 
 let s:TYPE_COMMAND = 'command'
 let s:TYPE_HIGHLIGHT_GROUP = 'highlight group'
+let s:TYPE_MAPPING = 'mapping'
 
 function! gevdoc#model#chapter#all(plugin_path, prefix, textwidth, excluded_pattern) abort
     let sections = []
@@ -31,6 +32,10 @@ function! gevdoc#model#chapter#all(plugin_path, prefix, textwidth, excluded_patt
     endif
     if has_key(chapterMap, s:TYPE_HIGHLIGHT_GROUP)
         let chapter = gevdoc#model#chapter#new('highlight groups', chapterMap[s:TYPE_HIGHLIGHT_GROUP], a:prefix, a:textwidth)
+        call add(chapters, chapter)
+    endif
+    if has_key(chapterMap, s:TYPE_MAPPING)
+        let chapter = gevdoc#model#chapter#new('mappings', chapterMap[s:TYPE_MAPPING], a:prefix, a:textwidth)
         call add(chapters, chapter)
     endif
 

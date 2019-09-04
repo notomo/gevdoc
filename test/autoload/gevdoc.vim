@@ -66,5 +66,15 @@ function! s:suite.generate()
     call s:assert.match(writer.lines[hl_index + 2], '\*GevDocTestHighlight\*$')
     call s:assert.match(writer.lines[hl_index + 3], '  test highlight group')
 
+    let mapping_index = search('^MAPPINGS', 'n') - 1
+    call s:assert.match(writer.lines[mapping_index], '^MAPPINGS')
+    call s:assert.match(writer.lines[mapping_index], '\*autoload-mappings\*$')
+
+    call s:assert.match(writer.lines[mapping_index + 1], '', 'empty line')
+
+    call s:assert.match(writer.lines[mapping_index + 2], '^<Plug>(gevdoc-test)')
+    call s:assert.match(writer.lines[mapping_index + 2], '\*<Plug>(gevdoc-test)\*$')
+    call s:assert.match(writer.lines[mapping_index + 3], '  test mapping')
+
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

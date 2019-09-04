@@ -55,6 +55,8 @@ function! s:parse(line) abort
         return gevdoc#model#definition#command#parse(factors)
     elseif factors[0] =~? '^hi'
         return gevdoc#model#definition#highlight_group#parse(factors)
+    elseif factors[0] =~? '^\w*noremap'
+        return gevdoc#model#definition#plug_mapping#parse(factors)
     endif
 
     throw 'not supported factor: ' . factors[0]
