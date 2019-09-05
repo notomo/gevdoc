@@ -2,19 +2,27 @@
 function! gevdoc#main(args) abort
     let plugin_path = getcwd()
     let writer = gevdoc#writer#new()
+    let output_writer = gevdoc#output_writer#new()
     let options = s:parse_options(a:args)
 
-    return gevdoc#generate(plugin_path, writer, options)
+    return gevdoc#generate(plugin_path, writer, output_writer, options)
 endfunction
 
-function! gevdoc#generate(plugin_path, writer, options) abort
+function! gevdoc#generate(plugin_path, writer, output_writer, options) abort
     let doc = gevdoc#model#doc#new(a:plugin_path, a:options)
-    call a:writer.write(doc.file_path, doc.lines())
+    let lines = doc.lines()
+    call a:writer.write(doc.file_path, lines)
+
+    if !a:options['quiet']
+        call a:output_writer.write(lines)
+    endif
+
     return doc
 endfunction
 
 let s:options = {
     \ 'exclude': [],
+    \ 'quiet': v:false,
 \ }
 
 function! s:parse_options(args) abort

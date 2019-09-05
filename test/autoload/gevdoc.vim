@@ -10,7 +10,7 @@ function! s:suite.after_each()
     call GevdocTestAfterEach()
 endfunction
 
-function! s:writer() abort
+function! s:log_writer() abort
     let writer = {'lines': v:null, 'file_path': v:null}
 
     function! writer.write(file_path, lines) abort
@@ -26,13 +26,35 @@ function! s:writer() abort
     return writer
 endfunction
 
+function! s:noop_writer() abort
+    let writer = {}
+
+    function! writer.write(file_path, lines) abort
+    endfunction
+
+    return writer
+endfunction
+
+function! s:output_writer() abort
+    let writer = {'called': v:false}
+
+    function! writer.write(lines) abort
+        let self.called = v:true
+    endfunction
+
+    return writer
+endfunction
+
 function! s:suite.generate()
     cd ./test/autoload
 
     let path = '.'
-    let writer = s:writer()
+    let writer = s:log_writer()
+    let output_writer = s:output_writer()
 
-    let doc = gevdoc#generate('.', writer, {'exclude': ['_test_data/excluded']})
+    let doc = gevdoc#generate(path, writer, output_writer, {'exclude': ['_test_data/excluded'], 'quiet': v:false})
+
+    call s:assert.true(output_writer.called)
 
     let expected_path = fnamemodify(path, ':p') . 'doc/autoload.txt'
     call s:assert.equals(doc.file_path, expected_path)
@@ -112,4 +134,16 @@ function! s:suite.generate()
     call s:assert.match(writer.lines[functions_index + 3], '^  test autoload function$')
 
     call s:assert.match(writer.lines[-1], '^vim:')
+endfunction
+
+function! s:suite.quiet_option() abort
+    cd ./test/autoload
+
+    let path = '.'
+    let writer = s:noop_writer()
+    let output_writer = s:output_writer()
+
+    let doc = gevdoc#generate(path, writer, output_writer, {'exclude': [], 'quiet': v:true})
+
+    call s:assert.false(output_writer.called)
 endfunction
