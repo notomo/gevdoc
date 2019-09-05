@@ -1,5 +1,5 @@
 
-function! gevdoc#writer#new() abort
+function! gevdoc#document_writer#new() abort
     let writer = {}
 
     function! writer.write(file_path, lines) abort
