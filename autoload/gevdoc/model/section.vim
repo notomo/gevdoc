@@ -41,7 +41,8 @@ function! gevdoc#model#section#new(definition, comments, textwidth) abort
 
     function! section.lines() abort
         let name = self.definition.name
-        let title = gevdoc#model#tag#add(name, self.textwidth)
+        let tag_name = !has_key(self.definition, 'tag_name') ? name : self.definition.tag_name
+        let title = gevdoc#model#tag#add(name, self.textwidth, tag_name)
         let comments = map(copy(self.comments), {_, v -> '  ' . v})
         return [title] + comments
     endfunction

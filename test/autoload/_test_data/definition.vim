@@ -19,3 +19,7 @@ let g:gevdoc_test = 1
 
 "" test buffer variable
 let b:gevdoc_test = 1
+
+"" test autoload function
+function! gevdoc#test(id, name) abort
+endfunction

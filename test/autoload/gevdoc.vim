@@ -99,5 +99,17 @@ function! s:suite.generate()
     call s:assert.match(writer.lines[variables_index + 6], '\*b:gevdoc_test\*$')
     call s:assert.match(writer.lines[variables_index + 7], '^  test buffer variable$')
 
+    let functions_index = search('^FUNCTIONS', 'n') - 1
+    call s:assert.match(writer.lines[functions_index], '^FUNCTIONS')
+    call s:assert.match(writer.lines[functions_index], '\*autoload-functions\*$')
+
+    call s:assert.match(writer.lines[functions_index + 1], '', 'empty line')
+
+    " TODO: support signature document
+    " call s:assert.match(writer.lines[functions_index + 2], '^gevdoc#test({id}, {name})')
+    call s:assert.match(writer.lines[functions_index + 2], '^gevdoc#test()')
+    call s:assert.match(writer.lines[functions_index + 2], '\*gevdoc#test()\*$')
+    call s:assert.match(writer.lines[functions_index + 3], '^  test autoload function$')
+
     call s:assert.match(writer.lines[-1], '^vim:')
 endfunction

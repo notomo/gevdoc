@@ -9,6 +9,8 @@ function! gevdoc#model#definition#definition#parse(line) abort
         return gevdoc#model#definition#plug_mapping#parse(factors)
     elseif len(factors) > 2 && factors[0] ==# 'let' && factors[1] =~# '^[gb]:'
         return gevdoc#model#definition#variable#parse(factors)
+    elseif len(factors) > 2 && factors[0] =~# '^fu' && factors[1] =~# '.*#'
+        return gevdoc#model#definition#autoload_function#parse(factors)
     endif
 
     throw 'not supported factor: ' . factors[0]
