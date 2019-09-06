@@ -13,7 +13,7 @@ endfunction
 function! gevdoc#model#definition#plug_mapping#new(name) abort
     let definition = {
         \ 'name': a:name,
-        \ 'type': 'mapping',
+        \ 'type': 'mappings',
     \ }
 
     return definition

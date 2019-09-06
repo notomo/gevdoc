@@ -3,10 +3,20 @@ let s:options = {
     \ 'exclude': [],
     \ 'quiet': v:false,
     \ 'dry-run': v:false,
+    \ 'chapters': ['commands', 'highlight groups', 'mappings', 'variables', 'functions'],
 \ }
 
 function! gevdoc#option#parse(...) abort
     let options = deepcopy(s:options)
+
+    let default_lists = {}
+    for [k, v] in items(s:options)
+        if type(v) != v:t_list || empty(v)
+            continue
+        endif
+        let default_lists[k] = v
+        let options[k] = []
+    endfor
 
     let key = ''
     for arg in a:000
@@ -26,6 +36,13 @@ function! gevdoc#option#parse(...) abort
             let value = options[key]
             call add(value, arg)
         endif
+    endfor
+
+    for [k, v] in items(default_lists)
+        if !empty(options[k])
+            continue
+        endif
+        let options[k] = v
     endfor
 
     return options

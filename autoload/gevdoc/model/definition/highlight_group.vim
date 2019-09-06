@@ -12,7 +12,7 @@ endfunction
 function! gevdoc#model#definition#highlight_group#new(name) abort
     let highlight_group = {
         \ 'name': a:name,
-        \ 'type': 'highlight group',
+        \ 'type': 'highlight groups',
     \ }
 
     return highlight_group

@@ -164,3 +164,34 @@ function! s:suite.dryrun_option() abort
     call s:assert.false(document_writer.called, 'document_writer.write must not be called')
     call s:assert.true(output_writer.called, 'output_writer.write must be called')
 endfunction
+
+function! s:suite.chapters_option() abort
+    cd ./test/autoload
+
+    let path = '.'
+    let document_writer = s:log_document_writer()
+    let output_writer = s:output_writer()
+    let options = gevdoc#option#parse('--chapters', 'highlight groups')
+
+    let doc = gevdoc#generate(path, document_writer, output_writer, options)
+
+    " dump to buffer
+    call append(1, document_writer.lines)
+    1delete _
+
+    call s:assert.match(document_writer.lines[0], '^\*autoload.txt\*')
+
+    call s:assert.equals(search('COMMANDS', 'n'), 0)
+
+    let hl_index = search('^HIGHLIGHT GROUPS', 'n') - 1
+    call s:assert.match(document_writer.lines[hl_index], '^HIGHLIGHT GROUPS')
+    call s:assert.match(document_writer.lines[hl_index], '\*autoload-highlight-groups\*$')
+
+    call s:assert.match(document_writer.lines[hl_index + 1], '', 'empty line')
+
+    call s:assert.match(document_writer.lines[hl_index + 2], '^GevDocTestHighlight')
+    call s:assert.match(document_writer.lines[hl_index + 2], '\*GevDocTestHighlight\*$')
+    call s:assert.match(document_writer.lines[hl_index + 3], '  test highlight group')
+
+    call s:assert.equals(search('MAPPINGS', 'n'), 0)
+endfunction

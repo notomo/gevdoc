@@ -1,11 +1,5 @@
 
-let s:TYPE_COMMAND = 'command'
-let s:TYPE_HIGHLIGHT_GROUP = 'highlight group'
-let s:TYPE_MAPPING = 'mapping'
-let s:TYPE_VARIABLE = 'variable'
-let s:TYPE_FUNCTION = 'function'
-
-function! gevdoc#model#chapter#all(plugin_path, prefix, width, excluded_pattern) abort
+function! gevdoc#model#chapter#all(types, plugin_path, prefix, width, excluded_pattern) abort
     let sections = []
 
     let paths = glob(a:plugin_path . '**/*.vim', v:true, v:true)
@@ -28,26 +22,14 @@ function! gevdoc#model#chapter#all(plugin_path, prefix, width, excluded_pattern)
     endfor
 
     let chapters = []
-    if has_key(chapterMap, s:TYPE_COMMAND)
-        let chapter = gevdoc#model#chapter#new('commands', chapterMap[s:TYPE_COMMAND], a:prefix, a:width)
+    for type in a:types
+        if !has_key(chapterMap, type)
+            continue
+        endif
+        let sections = chapterMap[type]
+        let chapter = gevdoc#model#chapter#new(type, sections, a:prefix, a:width)
         call add(chapters, chapter)
-    endif
-    if has_key(chapterMap, s:TYPE_HIGHLIGHT_GROUP)
-        let chapter = gevdoc#model#chapter#new('highlight groups', chapterMap[s:TYPE_HIGHLIGHT_GROUP], a:prefix, a:width)
-        call add(chapters, chapter)
-    endif
-    if has_key(chapterMap, s:TYPE_MAPPING)
-        let chapter = gevdoc#model#chapter#new('mappings', chapterMap[s:TYPE_MAPPING], a:prefix, a:width)
-        call add(chapters, chapter)
-    endif
-    if has_key(chapterMap, s:TYPE_VARIABLE)
-        let chapter = gevdoc#model#chapter#new('variables', chapterMap[s:TYPE_VARIABLE], a:prefix, a:width)
-        call add(chapters, chapter)
-    endif
-    if has_key(chapterMap, s:TYPE_FUNCTION)
-        let chapter = gevdoc#model#chapter#new('functions', chapterMap[s:TYPE_FUNCTION], a:prefix, a:width)
-        call add(chapters, chapter)
-    endif
+    endfor
 
     return chapters
 endfunction

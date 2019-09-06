@@ -12,7 +12,7 @@ endfunction
 function! gevdoc#model#definition#command#new(name) abort
     let command = {
         \ 'name': ':' . a:name,
-        \ 'type': 'command',
+        \ 'type': 'commands',
     \ }
 
     return command

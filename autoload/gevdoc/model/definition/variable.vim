@@ -10,7 +10,7 @@ endfunction
 function! gevdoc#model#definition#variable#new(name) abort
     let definition = {
         \ 'name': a:name,
-        \ 'type': 'variable',
+        \ 'type': 'variables',
     \ }
 
     return definition

@@ -12,7 +12,7 @@ function! gevdoc#model#definition#autoload_function#new(name) abort
     " TODO: support signature document
     let definition = {
         \ 'name': a:name . '()', 
-        \ 'type': 'function',
+        \ 'type': 'functions',
         \ 'tag_name': a:name . '()',
     \ }
 

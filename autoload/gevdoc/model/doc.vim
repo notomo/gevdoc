@@ -11,6 +11,7 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
         \ 'plugin_path': plugin_path,
         \ 'file_path': file_path,
         \ 'width': 78,
+        \ 'chapter_types': a:options['chapters'],
         \ 'excluded_pattern': excluded_pattern,
     \ }
 
@@ -25,7 +26,7 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
 
     function! doc.body(sep) abort
         let lines = []
-        for chapter in gevdoc#model#chapter#all(self.plugin_path, self.name, self.width, self.excluded_pattern)
+        for chapter in gevdoc#model#chapter#all(self.chapter_types, self.plugin_path, self.name, self.width, self.excluded_pattern)
             let lines += chapter.lines() + a:sep
         endfor
         return lines
