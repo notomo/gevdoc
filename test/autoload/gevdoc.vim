@@ -54,12 +54,12 @@ function! s:suite.generate()
     let output_writer = s:output_writer()
     let options = gevdoc#option#parse('--exclude', '_test_data/excluded')
 
-    let doc = gevdoc#generate(path, document_writer, output_writer, options)
+    let document = gevdoc#generate(path, document_writer, output_writer, options)
 
     call s:assert.true(output_writer.called)
 
     let expected_path = fnamemodify(path, ':p') . 'doc/autoload.txt'
-    call s:assert.equals(doc.file_path, expected_path)
+    call s:assert.equals(document.file_path, expected_path)
     call s:assert.equals(document_writer.file_path, expected_path)
 
     " dump to buffer
@@ -146,7 +146,7 @@ function! s:suite.quiet_option() abort
     let output_writer = s:output_writer()
     let options = gevdoc#option#parse('--quiet')
 
-    let doc = gevdoc#generate(path, document_writer, output_writer, options)
+    let document = gevdoc#generate(path, document_writer, output_writer, options)
 
     call s:assert.false(output_writer.called)
 endfunction
@@ -159,7 +159,7 @@ function! s:suite.dryrun_option() abort
     let output_writer = s:output_writer()
     let options = gevdoc#option#parse('--dry-run')
 
-    let doc = gevdoc#generate(path, document_writer, output_writer, options)
+    let document = gevdoc#generate(path, document_writer, output_writer, options)
 
     call s:assert.false(document_writer.called, 'document_writer.write must not be called')
     call s:assert.true(output_writer.called, 'output_writer.write must be called')
@@ -173,7 +173,7 @@ function! s:suite.chapters_option() abort
     let output_writer = s:output_writer()
     let options = gevdoc#option#parse('--chapters', 'highlight groups')
 
-    let doc = gevdoc#generate(path, document_writer, output_writer, options)
+    let document = gevdoc#generate(path, document_writer, output_writer, options)
 
     " dump to buffer
     call append(1, document_writer.lines)

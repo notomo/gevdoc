@@ -1,12 +1,12 @@
 
-function! gevdoc#model#doc#new(plugin_path, options) abort
+function! gevdoc#model#document#new(plugin_path, options) abort
     let plugin_path = fnamemodify(a:plugin_path, ':p')
     let name = fnamemodify(plugin_path, ':h:t')
     let file_path = plugin_path . 'doc/' . name . '.txt'
 
     let excluded_pattern = join(a:options['exclude'], '\|\m')
 
-    let doc = {
+    let document = {
         \ 'name': name,
         \ 'plugin_path': plugin_path,
         \ 'file_path': file_path,
@@ -15,7 +15,7 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
         \ 'excluded_pattern': excluded_pattern,
     \ }
 
-    function! doc.lines() abort
+    function! document.lines() abort
         let sep = self.separater()
         return
             \ gevdoc#model#header#lines(self.file_path) +
@@ -24,7 +24,7 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
             \ gevdoc#model#footer#lines(self.width)
     endfunction
 
-    function! doc.body(sep) abort
+    function! document.body(sep) abort
         let lines = []
         for chapter in gevdoc#model#chapter#all(self.chapter_types, self.plugin_path, self.name, self.width, self.excluded_pattern)
             let lines += chapter.lines() + a:sep
@@ -32,9 +32,9 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
         return lines
     endfunction
 
-    function! doc.separater() abort
+    function! document.separater() abort
         return ['', repeat('=', self.width)]
     endfunction
 
-    return doc
+    return document
 endfunction

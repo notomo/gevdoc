@@ -9,16 +9,16 @@ function! gevdoc#main(args) abort
 endfunction
 
 function! gevdoc#generate(plugin_path, document_writer, output_writer, options) abort
-    let doc = gevdoc#model#doc#new(a:plugin_path, a:options)
-    let lines = doc.lines()
+    let document = gevdoc#model#document#new(a:plugin_path, a:options)
+    let lines = document.lines()
 
     if !a:options['dry-run']
-        call a:document_writer.write(doc.file_path, lines)
+        call a:document_writer.write(document.file_path, lines)
     endif
 
     if !a:options['quiet']
         call a:output_writer.write(lines)
     endif
 
-    return doc
+    return document
 endfunction
