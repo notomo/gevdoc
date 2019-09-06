@@ -2,6 +2,7 @@
 let s:options = {
     \ 'exclude': [],
     \ 'quiet': v:false,
+    \ 'dry-run': v:false,
 \ }
 
 function! gevdoc#option#parse(...) abort

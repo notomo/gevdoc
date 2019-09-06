@@ -27,9 +27,10 @@ function! s:log_document_writer() abort
 endfunction
 
 function! s:noop_document_writer() abort
-    let writer = {}
+    let writer = {'called': v:false}
 
     function! writer.write(file_path, lines) abort
+        let self.called = v:true
     endfunction
 
     return writer
@@ -148,4 +149,18 @@ function! s:suite.quiet_option() abort
     let doc = gevdoc#generate(path, document_writer, output_writer, options)
 
     call s:assert.false(output_writer.called)
+endfunction
+
+function! s:suite.dryrun_option() abort
+    cd ./test/autoload
+
+    let path = '.'
+    let document_writer = s:noop_document_writer()
+    let output_writer = s:output_writer()
+    let options = gevdoc#option#parse('--dry-run')
+
+    let doc = gevdoc#generate(path, document_writer, output_writer, options)
+
+    call s:assert.false(document_writer.called, 'document_writer.write must not be called')
+    call s:assert.true(output_writer.called, 'output_writer.write must be called')
 endfunction
