@@ -1,12 +1,12 @@
 
-function! gevdoc#model#tag#add(target, textwidth, ...) abort
+function! gevdoc#model#tag#add(target, width, ...) abort
     if !empty(a:000)
         let tag_name = a:000[0]
     else
         let tag_name = a:target
     endif
     let tag = gevdoc#model#tag#new(tag_name)
-    let spaces = repeat(' ', a:textwidth - len(tag) - len(a:target))
+    let spaces = repeat(' ', a:width - len(tag) - len(a:target))
     return a:target . spaces . tag
 endfunction
 

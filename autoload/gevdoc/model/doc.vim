@@ -10,7 +10,7 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
         \ 'name': name,
         \ 'plugin_path': plugin_path,
         \ 'file_path': file_path,
-        \ 'textwidth': 78,
+        \ 'width': 78,
         \ 'excluded_pattern': excluded_pattern,
     \ }
 
@@ -20,19 +20,19 @@ function! gevdoc#model#doc#new(plugin_path, options) abort
             \ gevdoc#model#header#lines(self.file_path) +
             \ sep +
             \ self.body(sep) +
-            \ gevdoc#model#footer#lines(self.textwidth)
+            \ gevdoc#model#footer#lines(self.width)
     endfunction
 
     function! doc.body(sep) abort
         let lines = []
-        for chapter in gevdoc#model#chapter#all(self.plugin_path, self.name, self.textwidth, self.excluded_pattern)
+        for chapter in gevdoc#model#chapter#all(self.plugin_path, self.name, self.width, self.excluded_pattern)
             let lines += chapter.lines() + a:sep
         endfor
         return lines
     endfunction
 
     function! doc.separater() abort
-        return ['', repeat('=', self.textwidth)]
+        return ['', repeat('=', self.width)]
     endfunction
 
     return doc
