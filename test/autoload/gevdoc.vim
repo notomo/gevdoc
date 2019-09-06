@@ -51,8 +51,9 @@ function! s:suite.generate()
     let path = '.'
     let document_writer = s:log_document_writer()
     let output_writer = s:output_writer()
+    let options = gevdoc#option#parse('--exclude', '_test_data/excluded')
 
-    let doc = gevdoc#generate(path, document_writer, output_writer, {'exclude': ['_test_data/excluded'], 'quiet': v:false})
+    let doc = gevdoc#generate(path, document_writer, output_writer, options)
 
     call s:assert.true(output_writer.called)
 
@@ -142,8 +143,9 @@ function! s:suite.quiet_option() abort
     let path = '.'
     let document_writer = s:noop_document_writer()
     let output_writer = s:output_writer()
+    let options = gevdoc#option#parse('--quiet')
 
-    let doc = gevdoc#generate(path, document_writer, output_writer, {'exclude': [], 'quiet': v:true})
+    let doc = gevdoc#generate(path, document_writer, output_writer, options)
 
     call s:assert.false(output_writer.called)
 endfunction

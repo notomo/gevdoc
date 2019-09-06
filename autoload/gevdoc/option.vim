@@ -29,7 +29,3 @@ function! gevdoc#option#parse(...) abort
 
     return options
 endfunction
-
-function! gevdoc#option#all() abort
-    return gevdoc#option#parse()
-endfunction

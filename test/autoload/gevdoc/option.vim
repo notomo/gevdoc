@@ -13,7 +13,6 @@ endfunction
 function! s:suite.parse_default() abort
     let options = gevdoc#option#parse()
 
-    call s:assert.equals(options, gevdoc#option#all())
     call s:assert.equals(options['exclude'], [])
     call s:assert.false(options['quiet'])
 endfunction
