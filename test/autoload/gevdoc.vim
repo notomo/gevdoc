@@ -59,7 +59,6 @@ function! s:suite.generate()
     call s:assert.true(output_writer.called)
 
     let expected_path = fnamemodify(path, ':p') . 'doc/autoload.txt'
-    call s:assert.equals(document.file_path, expected_path)
     call s:assert.equals(document_writer.file_path, expected_path)
 
     " dump to buffer
