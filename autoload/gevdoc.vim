@@ -17,9 +17,9 @@ function! gevdoc#generate(plugin_path, document_writer, output_writer, options) 
 
     let sections = []
     for file in gevdoc#file#find(plugin_path, a:options['exclude'])
-        let sections += gevdoc#model#section#all(file.read(), width)
+        let sections += gevdoc#model#section#all(file.read())
     endfor
-    let chapters = gevdoc#model#chapter#all(a:options['chapters'], sections, name, width)
+    let chapters = gevdoc#model#chapter#all(a:options['chapters'], sections, name)
 
     let document = gevdoc#model#document#new(file_path, width, chapters)
     let lines = document.lines()

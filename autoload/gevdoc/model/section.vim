@@ -1,5 +1,5 @@
 
-function! gevdoc#model#section#all(file_lines, width) abort
+function! gevdoc#model#section#all(file_lines) abort
     let sections = []
 
     let comments = []
@@ -21,7 +21,7 @@ function! gevdoc#model#section#all(file_lines, width) abort
         let in_section = v:false
         if !empty(comments)
             let definition = gevdoc#model#definition#definition#parse(line)
-            let section = gevdoc#model#section#new(definition, comments, a:width)
+            let section = gevdoc#model#section#new(definition, comments)
             call add(sections, section)
 
             let comments = []
@@ -31,18 +31,17 @@ function! gevdoc#model#section#all(file_lines, width) abort
     return sections
 endfunction
 
-function! gevdoc#model#section#new(definition, comments, width) abort
+function! gevdoc#model#section#new(definition, comments) abort
     let section = {
         \ 'definition': a:definition,
         \ 'type': a:definition.type,
         \ 'comments': a:comments,
-        \ 'width': a:width,
     \ }
 
-    function! section.lines() abort
+    function! section.lines(width) abort
         let name = self.definition.name
         let tag_name = !has_key(self.definition, 'tag_name') ? name : self.definition.tag_name
-        let title = gevdoc#model#tag#add(name, self.width, tag_name)
+        let title = gevdoc#model#tag#add(name, a:width, tag_name)
         let comments = map(copy(self.comments), {_, v -> '  ' . v})
         return [title] + comments
     endfunction

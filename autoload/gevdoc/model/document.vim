@@ -4,7 +4,8 @@ function! gevdoc#model#document#new(file_path, width, chapters) abort
         \ 'header': gevdoc#model#header#lines(a:file_path),
         \ 'chapters': a:chapters,
         \ 'footer': gevdoc#model#footer#lines(a:width),
-        \ 'separater': gevdoc#model#separater#new('=', a:width)
+        \ 'separater': gevdoc#model#separater#new('=', a:width),
+        \ 'width': a:width,
     \ }
 
     function! document.lines() abort
@@ -18,7 +19,7 @@ function! gevdoc#model#document#new(file_path, width, chapters) abort
     function! document.body(separater) abort
         let lines = []
         for chapter in self.chapters
-            let lines += chapter.lines() + a:separater
+            let lines += chapter.lines(self.width) + a:separater
         endfor
         return lines
     endfunction
