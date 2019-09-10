@@ -23,3 +23,6 @@ let b:gevdoc_test = 1
 "" test autoload function
 function! gevdoc#test(id, name) abort
 endfunction
+
+"" test autocmd event
+doautocmd <nomodeline> User GevdocTested

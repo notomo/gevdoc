@@ -11,7 +11,7 @@ endfunction
 function! gevdoc#model#definition#autoload_function#new(name) abort
     " TODO: support signature document
     let definition = {
-        \ 'name': a:name . '()', 
+        \ 'name': a:name . '()',
         \ 'type': 'functions',
         \ 'tag_name': a:name . '()',
     \ }

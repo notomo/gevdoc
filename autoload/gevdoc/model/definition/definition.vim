@@ -11,6 +11,8 @@ function! gevdoc#model#definition#definition#parse(line) abort
         return gevdoc#model#definition#variable#parse(factors)
     elseif len(factors) > 2 && factors[0] =~# '^fu' && factors[1] =~# '.*#'
         return gevdoc#model#definition#autoload_function#parse(factors)
+    elseif factors[0] =~# '^do'
+        return gevdoc#model#definition#autocmd_event#parse(factors)
     endif
 
     throw 'not supported factor: ' . factors[0]

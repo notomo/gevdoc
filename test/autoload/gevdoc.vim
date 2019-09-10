@@ -134,6 +134,16 @@ function! s:suite.generate()
     call s:assert.match(document_writer.lines[functions_index + 2], '\*gevdoc#test()\*$')
     call s:assert.match(document_writer.lines[functions_index + 3], '^  test autoload function$')
 
+    let variables_index = search('^AUTOCMD EVENTS', 'n') - 1
+    call s:assert.match(document_writer.lines[variables_index], '^AUTOCMD EVENTS')
+    call s:assert.match(document_writer.lines[variables_index], '\*autoload-autocmd-events\*$')
+
+    call s:assert.match(document_writer.lines[variables_index + 1], '', 'empty line')
+
+    call s:assert.match(document_writer.lines[variables_index + 2], '^GevdocTested')
+    call s:assert.match(document_writer.lines[variables_index + 2], '\*GevdocTested\*$')
+    call s:assert.match(document_writer.lines[variables_index + 3], '^  test autocmd event$')
+
     call s:assert.match(document_writer.lines[-1], '^vim:')
 endfunction
 
