@@ -9,19 +9,16 @@ function! gevdoc#main(args) abort
 endfunction
 
 function! gevdoc#generate(plugin_path, document_writer, output_writer, options) abort
-    let width = 78
-
-    let plugin_path = fnamemodify(a:plugin_path, ':p')
-    let name = fnamemodify(plugin_path, ':h:t')
-    let file_path = plugin_path . 'doc/' . name . '.txt'
+    let plugin = gevdoc#model#plugin#new(a:plugin_path)
 
     let sections = []
-    for file in gevdoc#file#find(plugin_path, a:options['exclude'])
+    for file in gevdoc#file#find(plugin.path, a:options['exclude'])
         let sections += gevdoc#model#section#all(file.read())
     endfor
-    let chapters = gevdoc#model#chapter#all(a:options['chapters'], sections, name)
+    let chapters = gevdoc#model#chapter#all(a:options['chapters'], sections, plugin.name)
 
-    let document = gevdoc#model#document#new(file_path, width, chapters)
+    let file_path = plugin.file_path()
+    let document = gevdoc#model#document#new(file_path, chapters)
     let lines = document.lines()
 
     if !a:options['dry-run']

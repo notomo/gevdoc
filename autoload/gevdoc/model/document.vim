@@ -1,11 +1,13 @@
 
-function! gevdoc#model#document#new(file_path, width, chapters) abort
+function! gevdoc#model#document#new(file_path, chapters) abort
+    let width = 78
+
     let document = {
         \ 'header': gevdoc#model#header#lines(a:file_path),
         \ 'chapters': a:chapters,
-        \ 'footer': gevdoc#model#footer#lines(a:width),
-        \ 'separater': gevdoc#model#separater#new('=', a:width),
-        \ 'width': a:width,
+        \ 'footer': gevdoc#model#footer#lines(width),
+        \ 'separater': gevdoc#model#separater#new('=', width),
+        \ 'width': width,
     \ }
 
     function! document.lines() abort
