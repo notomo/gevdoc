@@ -31,6 +31,27 @@ function! gevdoc#model#section#all(file_lines) abort
     return sections
 endfunction
 
+function! gevdoc#model#section#external(file) abort
+    let section = {
+        \ 'type': a:file.name(),
+        \ '_file': a:file,
+    \ }
+
+    function! section.lines(width) abort
+        let lines = []
+        for line in self._file.read()
+            if empty(line)
+                call add(lines, line)
+                continue
+            endif
+            call add(lines, '  ' . line)
+        endfor
+        return ['>'] + lines + ['<']
+    endfunction
+
+    return [section]
+endfunction
+
 function! gevdoc#model#section#new(definition, comments) abort
     let section = {
         \ 'definition': a:definition,

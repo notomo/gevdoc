@@ -15,6 +15,9 @@ function! gevdoc#generate(plugin_path, document_writer, output_writer, options) 
     for file in gevdoc#file#find(plugin.path, a:options['exclude'])
         let sections += gevdoc#model#section#all(file.read())
     endfor
+    for file in gevdoc#file#externals(plugin.path, a:options['externals'])
+        let sections += gevdoc#model#section#external(file)
+    endfor
     let chapters = gevdoc#model#chapter#all(a:options['chapters'], sections, plugin.name)
 
     let file_path = plugin.file_path()

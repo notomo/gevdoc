@@ -5,6 +5,7 @@ let s:root = getcwd()
 
 function! GevdocTestBeforeEach() abort
     execute 'cd' s:root
+    call themis#log('')
 endfunction
 
 function! GevdocTestAfterEach() abort

@@ -3,7 +3,8 @@ let s:options = {
     \ 'exclude': [],
     \ 'quiet': v:false,
     \ 'dry-run': v:false,
-    \ 'chapters': ['commands', 'highlight groups', 'mappings', 'variables', 'functions', 'autocmd events'],
+    \ 'chapters': ['commands', 'highlight groups', 'mappings', 'variables', 'functions', 'autocmd events', 'examples'],
+    \ 'externals': [],
 \ }
 
 function! gevdoc#option#parse(...) abort

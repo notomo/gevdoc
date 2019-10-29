@@ -204,3 +204,40 @@ function! s:suite.chapters_option() abort
 
     call s:assert.equals(search('MAPPINGS', 'n'), 0)
 endfunction
+
+function! s:suite.external_option() abort
+    cd ./test/autoload
+
+    let path = '.'
+    let document_writer = s:log_document_writer()
+    let output_writer = s:output_writer()
+    let options = gevdoc#option#parse('--chapters', 'commands', 'examples', '--externals', './_test_data/examples.vim')
+
+    let document = gevdoc#generate(path, document_writer, output_writer, options)
+
+    " dump to buffer
+    call append(1, document_writer.lines)
+    1delete _
+
+    call s:assert.match(document_writer.lines[0], '^\*autoload.txt\*')
+
+    let commands_index = search('^COMMANDS', 'n') - 1
+    call s:assert.match(document_writer.lines[commands_index], '^COMMANDS')
+    call s:assert.match(document_writer.lines[commands_index], '\*autoload-commands\*$')
+
+    call s:assert.match(document_writer.lines[commands_index + 1], '', 'empty line')
+
+    call s:assert.match(document_writer.lines[commands_index + 2], '^:GevdocTestCommand')
+    call s:assert.match(document_writer.lines[commands_index + 2], '\*:GevdocTestCommand\*$')
+    call s:assert.match(document_writer.lines[commands_index + 3], '^  test command$')
+
+    let examples_index = search('^EXAMPLES', 'n') - 1
+    call s:assert.match(document_writer.lines[examples_index], '^EXAMPLES')
+    call s:assert.match(document_writer.lines[examples_index], '\*autoload-examples\*$')
+
+    call s:assert.match(document_writer.lines[commands_index + 1], '', 'empty line')
+
+    call s:assert.match(document_writer.lines[examples_index + 2], '>', 'start code')
+    call s:assert.match(document_writer.lines[examples_index + 3], '^  nnoremap <Plug>(gevdoc-test) :<C-u>GevdocTestCommand<CR>$')
+    call s:assert.match(document_writer.lines[examples_index + 4], '')
+endfunction
