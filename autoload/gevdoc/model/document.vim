@@ -1,11 +1,12 @@
 
 function! gevdoc#model#document#new(file_path, chapters) abort
     let width = 78
+    let tabstop = 8
 
     let document = {
         \ 'header': gevdoc#model#header#lines(a:file_path),
         \ 'chapters': a:chapters,
-        \ 'footer': gevdoc#model#footer#lines(width),
+        \ 'footer': gevdoc#model#footer#lines(width, tabstop),
         \ 'separater': gevdoc#model#separater#new('=', width),
         \ 'width': width,
     \ }

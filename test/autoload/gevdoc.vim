@@ -145,6 +145,9 @@ function! s:suite.generate()
     call s:assert.match(document_writer.lines[variables_index + 3], '^  test autocmd event$')
 
     call s:assert.match(document_writer.lines[-1], '^vim:')
+    call s:assert.match(document_writer.lines[-1], ':tw=78:')
+    call s:assert.match(document_writer.lines[-1], ':ts=8:')
+    call s:assert.match(document_writer.lines[-1], ':ft=help')
 endfunction
 
 function! s:suite.quiet_option() abort
