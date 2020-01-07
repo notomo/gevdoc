@@ -3,7 +3,7 @@ let s:options = {
     \ 'exclude': [],
     \ 'quiet': v:false,
     \ 'dry-run': v:false,
-    \ 'chapters': ['commands', 'highlight groups', 'mappings', 'variables', 'functions', 'autocmd events', 'examples'],
+    \ 'chapters': ['introduction', 'commands', 'highlight groups', 'mappings', 'variables', 'functions', 'autocmd events', 'examples'],
     \ 'externals': [],
 \ }
 

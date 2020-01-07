@@ -28,5 +28,9 @@ function! s:new(path) abort
         return fnamemodify(self.path, ':t:r')
     endfunction
 
+    function! f.is_code() abort
+        return fnamemodify(self.path, ':e') ==? 'vim'
+    endfunction
+
     return f
 endfunction

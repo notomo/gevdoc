@@ -214,7 +214,7 @@ function! s:suite.external_option() abort
     let path = '.'
     let document_writer = s:log_document_writer()
     let output_writer = s:output_writer()
-    let options = gevdoc#option#parse('--chapters', 'commands', 'examples', '--externals', './_test_data/examples.vim')
+    let options = gevdoc#option#parse('--chapters', 'introduce', 'commands', 'examples', '--externals', './_test_data/examples.vim', './_test_data/introduce')
 
     let document = gevdoc#generate(path, document_writer, output_writer, options)
 
@@ -223,6 +223,14 @@ function! s:suite.external_option() abort
     1delete _
 
     call s:assert.match(document_writer.lines[0], '^\*autoload.txt\*')
+
+    let introduce_index = search('^INTRODUCE', 'n') - 1
+    call s:assert.match(document_writer.lines[introduce_index], '^INTRODUCE')
+    call s:assert.match(document_writer.lines[introduce_index], '\*autoload-introduce\*$')
+
+    call s:assert.match(document_writer.lines[introduce_index + 1], '', 'empty line')
+
+    call s:assert.match(document_writer.lines[introduce_index + 2], '^example plugin$')
 
     let commands_index = search('^COMMANDS', 'n') - 1
     call s:assert.match(document_writer.lines[commands_index], '^COMMANDS')

@@ -38,6 +38,10 @@ function! gevdoc#model#section#external(file) abort
     \ }
 
     function! section.lines(width) abort
+        if !self._file.is_code()
+            return self._file.read()
+        endif
+
         let lines = []
         for line in self._file.read()
             if empty(line)
