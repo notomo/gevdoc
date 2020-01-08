@@ -3,11 +3,93 @@ call themis#option('recursive', 1)
 
 let s:root = getcwd()
 
-function! GevdocTestBeforeEach() abort
+function! GevdocTestHelper() abort
+    let helper = {
+        \ 'before_each': function('s:before_each'),
+        \ 'after_each': function('s:after_each'),
+    \ }
+
+    function! helper.suite(name) abort
+        let suite = themis#suite(a:name)
+        let suite.before_each = self.before_each
+        let suite.after_each = self.after_each
+        return suite
+    endfunction
+
+    function! helper.assert() abort
+        return s:assert()
+    endfunction
+
+    function! helper.dump(lines) abort
+        call append(1, a:lines)
+        1delete _
+    endfunction
+
+    function! helper.log_document_writer() abort
+        let writer = {'lines': v:null, 'file_path': v:null}
+
+        function! writer.write(file_path, lines) abort
+            call themis#log('[path] ' . a:file_path)
+            for line in a:lines
+                call themis#log('[file] ' . line)
+            endfor
+
+            let self.lines = a:lines
+            let self.file_path = a:file_path
+        endfunction
+
+        return writer
+    endfunction
+
+    function! helper.noop_document_writer() abort
+        let writer = {'called': v:false}
+
+        function! writer.write(file_path, lines) abort
+            let self.called = v:true
+        endfunction
+
+        return writer
+    endfunction
+
+    function! helper.output_writer() abort
+        let writer = {'called': v:false}
+
+        function! writer.write(lines) abort
+            let self.called = v:true
+        endfunction
+
+        return writer
+    endfunction
+
+    function! helper.search(pattern) abort
+        let result = search(a:pattern, 'n')
+        if result == 0
+            let message = printf('%s not found', a:pattern)
+            call self.assert.fail(message)
+        endif
+        return result
+    endfunction
+
+    return helper
+endfunction
+
+function! s:assert() abort
+    let assert = themis#helper('assert')
+
+    function! assert.not_found(pattern) abort
+        let actual = search(a:pattern, 'n')
+        let message = printf('%s should not be found', a:pattern)
+        call self.equals(actual, 0, message)
+    endfunction
+
+    return assert
+endfunction
+
+function! s:before_each() abort
     execute 'cd' s:root
     call themis#log('')
 endfunction
 
-function! GevdocTestAfterEach() abort
+function! s:after_each() abort
     silent! %bwipeout!
 endfunction

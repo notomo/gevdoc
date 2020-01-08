@@ -1,14 +1,7 @@
 
-let s:suite = themis#suite('autoload.gevdoc.option')
-let s:assert = themis#helper('assert')
-
-function! s:suite.before_each()
-    call GevdocTestBeforeEach()
-endfunction
-
-function! s:suite.after_each()
-    call GevdocTestAfterEach()
-endfunction
+let s:helper = GevdocTestHelper()
+let s:suite = s:helper.suite('autoload.gevdoc.option')
+let s:assert = s:helper.assert()
 
 function! s:suite.parse_default() abort
     let options = gevdoc#option#parse()
