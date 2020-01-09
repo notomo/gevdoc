@@ -26,3 +26,11 @@ endfunction
 
 "" test autocmd event
 doautocmd <nomodeline> User GevdocTested
+
+"" code in doc
+" ```
+" GevdocTestCodeInDoc " no echo
+"
+" GevdocTestCodeInDoc 'test' " echo test
+" ```
+command! -nargs=? GevdocTestCodeInDoc echo <args>

@@ -61,14 +61,26 @@ function! gevdoc#model#section#new(definition, comments) abort
         \ 'definition': a:definition,
         \ 'type': a:definition.type,
         \ 'comments': a:comments,
+        \ '_in_code': v:false,
     \ }
 
     function! section.lines(width) abort
         let name = self.definition.name
         let tag_name = !has_key(self.definition, 'tag_name') ? name : self.definition.tag_name
         let title = gevdoc#model#tag#add(name, a:width, tag_name)
-        let comments = map(copy(self.comments), {_, v -> '  ' . v})
+
+        let comments = map(copy(self.comments), {_, v -> self._make(v)})
+
         return [title] + comments
+    endfunction
+
+    function! section._make(line) abort
+        if a:line ==? '```'
+            let in_code = self._in_code
+            let self._in_code = !in_code
+            return in_code ? '<' : '>'
+        endif
+        return '  ' . a:line
     endfunction
 
     return section

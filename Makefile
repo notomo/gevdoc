@@ -6,4 +6,9 @@ start:
 	./bin/gevdoc --exclude test/autoload/_test_data --externals test/autoload/_test_data/examples.vim
 	./bin/gevdoc --exclude test/autoload/_test_data
 
+doc:
+	./bin/gevdoc --exclude test/autoload/_test_data
+
 .PHONY: test
+.PHONY: start
+.PHONY: doc

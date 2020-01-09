@@ -32,6 +32,17 @@ function! s:suite.generate()
     call s:assert.match(document_writer.lines[commands_index + 2], '\*:GevdocTestCommand\*$')
     call s:assert.match(document_writer.lines[commands_index + 3], '^  test command$')
 
+    call s:assert.match(document_writer.lines[commands_index + 4], '', 'empty line')
+
+    call s:assert.match(document_writer.lines[commands_index + 5], '^:GevdocTestCodeInDoc')
+    call s:assert.match(document_writer.lines[commands_index + 5], '\*:GevdocTestCodeInDoc\*$')
+    call s:assert.match(document_writer.lines[commands_index + 6], '^  code in doc$')
+    call s:assert.match(document_writer.lines[commands_index + 7], '>', 'start code')
+    call s:assert.match(document_writer.lines[commands_index + 8], 'GevdocTestCodeInDoc')
+    call s:assert.match(document_writer.lines[commands_index + 9], '', 'empty line')
+    call s:assert.match(document_writer.lines[commands_index + 10], "GevdocTestCodeInDoc 'test'")
+    call s:assert.match(document_writer.lines[commands_index + 11], '<', 'end code')
+
     call s:assert.not_found('GevdocTestExcluded')
 
     let hl_index = s:helper.search('^HIGHLIGHT GROUPS') - 1
